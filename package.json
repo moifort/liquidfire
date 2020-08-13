@@ -1,11 +1,13 @@
 {
-  "name": "liquidfire",
-  "version": "1.0.0",
+  "name": "@moifort/fireway",
+  "version": "1.0.1",
   "description": "Schema migration tool for Firestore",
   "main": "src/index.js",
-  "bin": "src/cli.js",
+  "bin": {
+    "fireway" : "src/cli.js"
+  },
   "scripts": {
-    "release": "git commit -am $npm_package_version && git tag $npm_package_version && git push && git push --tags && npm login && npm publish"
+    "release": "git commit -am $npm_package_version && git tag $npm_package_version && git push && git push --tags && npm login && npm publish --access=public"
   },
   "dependencies": {
     "firebase-admin": "8.10.0",
