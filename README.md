@@ -4,11 +4,7 @@ A schema migration tool for firestore heavily inspired by [flyway](https://flywa
 ## Install
 
 ```bash
-yarn add -G fireway
-
-# or 
-
-npx fireway
+yarn add liquidfire
 ```
 
 ## CLI
