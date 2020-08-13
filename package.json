@@ -1,0 +1,16 @@
+{
+  "name": "liquidfire",
+  "version": "1.0.0",
+  "description": "Schema migration tool for Firestore",
+  "main": "src/index.js",
+  "bin": "src/cli.js",
+  "scripts": {
+    "release": "git commit -am $npm_package_version && git tag $npm_package_version && git push && git push --tags && npm login && npm publish"
+  },
+  "dependencies": {
+    "firebase-admin": "8.10.0",
+    "md5": "2.2.1",
+    "sade": "1.7.3",
+    "@firebase/testing": "0.20.10"
+  }
+}
