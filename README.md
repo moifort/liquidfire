@@ -4,7 +4,7 @@ A schema migration tool for firestore heavily inspired by [flyway](https://flywa
 ## Install
 
 ```bash
-yarn add liquidfire
+yarn add @moifort/fireway
 ```
 
 ## CLI
@@ -35,24 +35,23 @@ Usage
 Options
   --path         Path to migration files  (default ./migrations)
   --projectId    Target firebase project
-  --dryrun       Simulates changes
+  --emulator     Run on emulator
   -h, --help     Displays this message
 
 Examples
   $ fireway migrate
   $ fireway migrate --path=./my-migrations
   $ fireway migrate --projectId=my-staging-id
-  $ fireway migrate --dryrun
 ```
 
 ## Migration file format
 
-Migration file name format: `v[semver]__[description].js`
+Migration file name format: `vXXX__[description].js` when `XXX` is a number ex: `001`, `002`
 
 ```js
 // each script gets a pre-configured firestore admin instance
-module.exports.migrate = async ({firestore, FieldValue}) => {
-    await firestore.collection('name').add({key: FieldValue.serverTimestamp()});
+module.exports.migrate = async ({firestore}) => {
+    await firestore.collection('name').add({key: new Date()});
 };
 ```
 
@@ -61,7 +60,6 @@ module.exports.migrate = async ({firestore, FieldValue}) => {
 Migration results are stored in the `fireway` collection in `firestore`
 
 ```js
-// /fireway/3-0.0.1-example
 
 {
   checksum: 'fdfe6a55a7c97a4346cb59871b4ce97c',
@@ -84,17 +82,16 @@ Migration results are stored in the `fireway` collection in `firestore`
 3. If the last migration failed, stop. (remove the failed result or restore the db to continue)
 4. Run the migration scripts since the last migration
 
-## Contributing
+## Authentication
 
-```bash
-# To install packages and firestore emulator
-$ yarn
-$ yarn setup
+To run on your project (with your CD for instance) give `GOOGLE_CREDENTIALS` environment variable. 
 
-# To run tests
-$ yarn test
-```
+`GOOGLE_CREDENTIALS='{ "type": "service_account",  "project_id": "...",  "private_key_id": "...",  "private_key": "...",  "client_email": ...",  "token_uri": "..." }' fireway migrate --path=./migration/prod`
 
-## License
+You can find the json on your firebase console: **Settings/Service Account/SDK Admin Key/Generate private key**
 
-MIT
+You dont need `GOOGLE_CREDENTIALS` if you use `--emulators` but you must provide `--projectId`
+
+## Thanks
+
+@kevlened
