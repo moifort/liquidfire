@@ -2,6 +2,7 @@ const path = require('path')
 const md5 = require('md5')
 const fs = require('fs')
 const admin = require('firebase-admin')
+const adminTest = require('@firebase/testing')
 
 async function migrate({path: dir = './migrations', projectId, emulator = false} = {}) {
     const stats = {
@@ -53,9 +54,9 @@ async function migrate({path: dir = './migrations', projectId, emulator = false}
     stats.scannedFiles = files.length
     console.log(`Found ${stats.scannedFiles} migration files`)
 
-    const app = admin.initializeApp({
-        credential: admin.credential.cert(JSON.parse(process.env.GOOGLE_CREDENTIALS)),
-    })
+    const app = emulator
+        ? adminTest.initializeAdminApp({projectId})
+        : admin.initializeApp({credential: admin.credential.cert(JSON.parse(process.env.GOOGLE_CREDENTIALS))})
 
     const firestore = app.firestore()
     const firewayCollection = firestore.collection('fireway')
