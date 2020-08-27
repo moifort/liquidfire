@@ -3,6 +3,7 @@ const md5 = require('md5')
 const fs = require('fs')
 const admin = require('firebase-admin')
 const adminTest = require('@firebase/testing')
+const consola = require('consola')
 
 async function migrate({path: dir = './migrations', projectId, emulator = false} = {}) {
     const stats = {
@@ -52,7 +53,7 @@ async function migrate({path: dir = './migrations', projectId, emulator = false}
     }).filter(Boolean)
 
     stats.scannedFiles = files.length
-    console.log(`Found ${stats.scannedFiles} migration files`)
+    consola.info(`Found ${stats.scannedFiles} migration files`)
 
     const app = emulator
         ? adminTest.initializeAdminApp({projectId})
@@ -83,18 +84,18 @@ async function migrate({path: dir = './migrations', projectId, emulator = false}
 
     files.sort((f1, f2) => f1 - f2)
 
-    console.log(`Executing ${files.length} migration files`)
+    consola.info(`Executing ${files.length} migration files`)
 
     // Execute them in order
     for (const file of files) {
         stats.executedFiles += 1
-        console.log('Running', file.filename)
+        consola.info('Running', file.filename)
 
         let migration
         try {
             migration = require(file.path)
         } catch (e) {
-            console.log(e)
+            consola.error(e)
             throw e
         }
 
@@ -104,14 +105,14 @@ async function migrate({path: dir = './migrations', projectId, emulator = false}
             await migration.migrate({app, firestore})
             success = true
         } catch (e) {
-            console.log(`Error in ${file.filename}`, e)
+            consola.error(`Error in ${file.filename}`, e)
             success = false
         } finally {
             finish = new Date()
         }
 
         // Upload the results
-        console.log(`Uploading the results for ${file.filename}`)
+        consola.info(`Uploading the results for ${file.filename}`)
 
         installed_rank += 1
         const id = `${installed_rank}-${file.version}-${file.description}`
@@ -128,15 +129,17 @@ async function migrate({path: dir = './migrations', projectId, emulator = false}
         })
 
         if (!success) {
-            throw new Error('Stopped at first failure')
+            const error = new Error('Stopped at first failure')
+            consola.error(error)
+            throw error
         }
     }
 
     await app.delete()
 
     const {scannedFiles, executedFiles} = stats
-    console.log('Finished all firestore migrations')
-    console.log(`Files scanned:${scannedFiles} executed:${executedFiles}`)
+    consola.success('Finished all firestore migrations')
+    consola.success(`Files scanned:${scannedFiles} executed:${executedFiles} miaou`)
 }
 
 module.exports = {migrate}

@@ -1,6 +1,6 @@
 {
   "name": "@moifort/fireway",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Schema migration tool for Firestore",
   "main": "src/index.js",
   "license": "MIT",
@@ -11,9 +11,10 @@
     "release": "git commit -am $npm_package_version && git tag $npm_package_version && git push && git push --tags && npm login && npm publish --access=public"
   },
   "dependencies": {
+    "@firebase/testing": "0.20.10",
+    "consola": "^2.15.0",
     "firebase-admin": "9.1.0",
     "md5": "2.3.0",
-    "sade": "1.7.3",
-    "@firebase/testing": "0.20.10"
+    "sade": "1.7.3"
   }
 }
