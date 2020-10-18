@@ -1,6 +1,6 @@
 {
   "name": "@moifort/fireway",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Schema migration tool for Firestore",
   "main": "src/index.js",
   "license": "MIT",
