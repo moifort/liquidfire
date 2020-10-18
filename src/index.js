@@ -139,7 +139,7 @@ async function migrate({path: dir = './migrations', projectId, emulator = false}
 
     const {scannedFiles, executedFiles} = stats
     consola.success('Finished all firestore migrations')
-    consola.success(`Files scanned:${scannedFiles} executed:${executedFiles} miaou`)
+    consola.success(`Files scanned:${scannedFiles} executed:${executedFiles}`)
 }
 
 module.exports = {migrate}

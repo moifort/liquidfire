@@ -4,8 +4,20 @@ A schema migration tool for firestore heavily inspired by [flyway](https://flywa
 ## Install
 
 ```bash
-yarn add @moifort/fireway
+yarn add --dev @moifort/fireway
 ```
+
+
+## How to
+
+Run on emulators: `fireway migrate --path=MIGRATION_DIR_PATH --projectId=FIREBASE_PROJECT_ID --emulator`
+- `MIGRATION_DIR_PATH`: migration directory path where script are see [Migration file format](). i.e. `./migration/dev` 
+- `FIREBASE_PROJECT_ID`: firebase project id defined in `.firebaserc` file. i.e. `grdf-c590f`
+
+On production: `fireway migrate --path=MIGRATION_DIR_PATH`
+- `MIGRATION_DIR_PATH`: migration directory path where script are see [Migration file format](). i.e. `./migration/prod`
+- You should set `GOOGLE_CREDENTIALS` env see [Authentication]()
+
 
 ## CLI
 
